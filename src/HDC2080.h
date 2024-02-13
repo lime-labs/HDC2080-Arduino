@@ -1,11 +1,11 @@
 /*
 	HDC2080.h
 	HDC2010.h originally created by: Brandon Fisher, August 1st 2017
-	
+
 	This code is release AS-IS into the public domain, no guarantee or warranty is given.
-	
+
 	Description: This header file accompanies HDC2080.cpp, and declares all methods, fields,
-	and constants used in the source code. 
+	and constants used in the source code.
 */
 
 #ifndef HDC2080_h
@@ -43,12 +43,13 @@ class HDC2080
 public:
 	HDC2080(uint8_t addr);					  // Initialize the HDC2080
 	void begin(void);						  // Join I2C bus
-	void begin(int sda, int scl);	// Join I2C bus with specified SDA and SCL pins
+	void begin(int sda, int scl);			  // Join I2C bus with specified SDA and SCL pins
+	bool isConnected();						  // Returns true if connected
 	float readTemp(void);					  // Returns the temperature in degrees C
 	uint8_t readTempOffsetAdjust(void);		  // Returns the offset adjust in binary
-	uint8_t setTempOffsetAdjust(uint8_t);	 // Set and return the offset adjust in binary
+	uint8_t setTempOffsetAdjust(uint8_t);	  // Set and return the offset adjust in binary
 	float readHumidity(void);				  // Returns the relative humidity
-	uint8_t readHumidityOffsetAdjust(void);   // Returns the offset adjust in binary
+	uint8_t readHumidityOffsetAdjust(void);	  // Returns the offset adjust in binary
 	uint8_t setHumidityOffsetAdjust(uint8_t); // Set and return the offset adjust in binary
 	void enableHeater(void);				  // Enables the heating element
 	void disableHeater(void);				  // Disables the heating element
@@ -56,8 +57,8 @@ public:
 	void setHighTemp(float temp);			  // Sets high threshold temperature (in c)
 	void setHighHumidity(float humid);		  // Sets high Humiditiy threshold
 	void setLowHumidity(float humid);		  // Sets low Humidity threshold
-	float readLowHumidityThreshold(void);	 // Returns contents of low humidity threshold register
-	float readHighHumidityThreshold(void);	// Returns contents of high humidity threshold register
+	float readLowHumidityThreshold(void);	  // Returns contents of low humidity threshold register
+	float readHighHumidityThreshold(void);	  // Returns contents of high humidity threshold register
 	float readLowTempThreshold(void);		  // Returns contents of low temperature threshold register (in C)
 	float readHighTempThreshold(void);		  // Returns contents of high temperature threshold register (in C)
 	void triggerMeasurement(void);			  // Triggers a manual temperature/humidity reading
@@ -70,7 +71,7 @@ public:
 	float readMaxTemp(void);				  // Reads the maximum temperature register
 	float readMaxHumidity(void);			  // Reads the maximum humidity register
 	void enableThresholdInterrupt(void);	  // Enables high and low temperature/humidity interrupts
-	void disableThresholdInterrupt(void);	 // Disables high and low temperature/humidity interrupts
+	void disableThresholdInterrupt(void);	  // Disables high and low temperature/humidity interrupts
 	void enableDRDYInterrupt(void);			  // Enables data ready interrupt
 	void disableDRDYInterrupt(void);		  // Disables data ready interrupt
 

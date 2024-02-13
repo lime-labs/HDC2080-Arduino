@@ -1,18 +1,18 @@
 /*
 	HDC2080.cpp
 	HDC2010.cpp originally created by: Brandon Fisher, August 1st 2017
-	
+
 	This code is release AS-IS into the public domain, no guarantee or warranty is given.
-	
+
 	Description: This library facilitates communication with, and configuration of,
-	the HDC2080 Temperature and Humidity Sensor. It makes extensive use of the 
-	Wire.H library, and should be useable with both Arduino and Energia. 
+	the HDC2080 Temperature and Humidity Sensor. It makes extensive use of the
+	Wire.H library, and should be useable with both Arduino and Energia.
 */
 
 #include <HDC2080.h>
 #include <Wire.h>
 
-//Define Register Map
+// Define Register Map
 #define TEMP_LOW 0x00
 #define TEMP_HIGH 0x01
 #define HUMID_LOW 0x02
@@ -48,7 +48,18 @@ void HDC2080::begin(int sda, int scl)
 {
 	Wire.begin(sda, scl);
 }
-
+bool HDC2080::isConnected(void)
+{
+	if ((_addr == 0x40) || (_addr == 0x41))
+	{
+		Wire.beginTransmission(_addr);
+		return (Wire.endTransmission() == 0);
+	}
+	else
+	{
+		return false;
+	}
+}
 float HDC2080::readTemp(void)
 {
 	uint8_t byte[2];
@@ -102,11 +113,11 @@ uint8_t HDC2080::setHumidityOffsetAdjust(uint8_t value)
 
 void HDC2080::enableHeater(void)
 {
-	uint8_t configContents; //Stores current contents of config register
+	uint8_t configContents; // Stores current contents of config register
 
 	configContents = readReg(CONFIG);
 
-	//set bit 3 to 1 to enable heater
+	// set bit 3 to 1 to enable heater
 	configContents = (configContents | 0x08);
 
 	writeReg(CONFIG, configContents);
@@ -114,11 +125,11 @@ void HDC2080::enableHeater(void)
 
 void HDC2080::disableHeater(void)
 {
-	uint8_t configContents; //Stores current contents of config register
+	uint8_t configContents; // Stores current contents of config register
 
 	configContents = readReg(CONFIG);
 
-	//set bit 3 to 0 to disable heater (all other bits 1)
+	// set bit 3 to 0 to disable heater (all other bits 1)
 	configContents = (configContents & 0xF7);
 	writeReg(CONFIG, configContents);
 }
@@ -311,7 +322,7 @@ void HDC2080::setTempRes(int resolution)
 	writeReg(MEASUREMENT_CONFIG, configContents);
 }
 /*  Bits 5 and 6 of the MEASUREMENT_CONFIG register controls
-    the humidity resolution*/
+	the humidity resolution*/
 void HDC2080::setHumidRes(int resolution)
 {
 	uint8_t configContents;
@@ -341,7 +352,7 @@ void HDC2080::setHumidRes(int resolution)
 }
 
 /*  Bits 2 and 1 of the MEASUREMENT_CONFIG register controls
-    the measurement mode  */
+	the measurement mode  */
 void HDC2080::setMeasurementMode(int mode)
 {
 	uint8_t configContents;
@@ -371,7 +382,7 @@ void HDC2080::setMeasurementMode(int mode)
 }
 
 /*  Bit 0 of the MEASUREMENT_CONFIG register can be used
-    to trigger measurements  */
+	to trigger measurements  */
 void HDC2080::triggerMeasurement(void)
 {
 	uint8_t configContents;
@@ -381,8 +392,8 @@ void HDC2080::triggerMeasurement(void)
 	writeReg(MEASUREMENT_CONFIG, configContents);
 }
 
-/*  Bit 7 of the CONFIG register can be used to trigger a 
-    soft reset  */
+/*  Bit 7 of the CONFIG register can be used to trigger a
+	soft reset  */
 void HDC2080::reset(void)
 {
 	uint8_t configContents;
@@ -393,8 +404,8 @@ void HDC2080::reset(void)
 	delay(50);
 }
 
-/*  Bit 2 of the CONFIG register can be used to enable/disable 
-    the interrupt pin  */
+/*  Bit 2 of the CONFIG register can be used to enable/disable
+	the interrupt pin  */
 void HDC2080::enableInterrupt(void)
 {
 	uint8_t configContents;
@@ -404,8 +415,8 @@ void HDC2080::enableInterrupt(void)
 	writeReg(CONFIG, configContents);
 }
 
-/*  Bit 2 of the CONFIG register can be used to enable/disable 
-    the interrupt pin  */
+/*  Bit 2 of the CONFIG register can be used to enable/disable
+	the interrupt pin  */
 void HDC2080::disableInterrupt(void)
 {
 	uint8_t configContents;
@@ -415,8 +426,8 @@ void HDC2080::disableInterrupt(void)
 	writeReg(CONFIG, configContents);
 }
 
-/*  Bits 6-4  of the CONFIG register controls the measurement 
-    rate  */
+/*  Bits 6-4  of the CONFIG register controls the measurement
+	rate  */
 void HDC2080::setRate(int rate)
 {
 	uint8_t configContents;
@@ -469,8 +480,8 @@ void HDC2080::setRate(int rate)
 	writeReg(CONFIG, configContents);
 }
 
-/*  Bit 1 of the CONFIG register can be used to control the  
-    the interrupt pins polarity */
+/*  Bit 1 of the CONFIG register can be used to control the
+	the interrupt pins polarity */
 void HDC2080::setInterruptPolarity(int polarity)
 {
 	uint8_t configContents;
@@ -493,8 +504,8 @@ void HDC2080::setInterruptPolarity(int polarity)
 	writeReg(CONFIG, configContents);
 }
 
-/*  Bit 0 of the CONFIG register can be used to control the  
-    the interrupt pin's mode */
+/*  Bit 0 of the CONFIG register can be used to control the
+	the interrupt pin's mode */
 void HDC2080::setInterruptMode(int mode)
 {
 	uint8_t configContents;
