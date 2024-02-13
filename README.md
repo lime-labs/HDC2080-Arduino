@@ -38,6 +38,9 @@ Library Functions:
 			
 		void begin(void)  						
 			- Equivalent to wire.Begin(), Joins I2C Bus
+   
+                bool isConnected(void)
+		        - Returns true if sensor is connected
 			
 		float readTemp(void)					
 			- Returns the temperature in degrees C
