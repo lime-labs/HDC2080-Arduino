@@ -69,7 +69,8 @@ float HDC2080::readTemp(void)
 	temp = byte[1];
 	temp = (temp << 8) | byte[0];
 	float f = temp;
-	f = ((f * 165.0f) / 65536.0f) - 40.0f;
+	//f = ((f * 165.0f) / 65536.0f) - (40.5f + 0.08f * (VDD - 1.8f)); // if the sensor is powered with more than 1.8 V, replace the VDD with the power source voltage.
+	f = ((f * 165.0f) / 65536.0f) - 40.5f;
 	return f;
 }
 
